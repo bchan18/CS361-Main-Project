@@ -6,7 +6,7 @@ music_library_file = "library.csv"
 playlist_file = "playlist.csv"
 
 
-def load_music_library():
+def read_music_library():
     """"""
     with open(music_library_file, 'r') as file:
         reader = csv.DictReader(file)
@@ -18,7 +18,7 @@ def load_music_library():
     return songs_list
 
 
-def load_playlist():
+def read_playlist():
     """"""
     with open(playlist_file, 'r') as file:
         reader = csv.DictReader(file)
@@ -30,7 +30,16 @@ def load_playlist():
     return playlist
 
 
-def find_artist(library):
+def write_playlist(playlist):
+    with open(playlist_file, 'w') as file:
+        fieldnames = ['Title', 'Artist']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        for song in playlist:
+            writer.writerow({'Title': song['title'], 'Artist': song['artist']})
+
+
+def find_artist(library, playlist):
     """"""
     print("\n==============================================================="
           "===============================")
@@ -68,6 +77,7 @@ def find_artist(library):
             if selection == "1":
                 continue
             elif selection == "2":
+                add_songs_direct(playlist, song['title'], song['artist'])
                 break
             elif selection == "3":
                 break
@@ -76,38 +86,78 @@ def find_artist(library):
                 break
 
 
-
 def find_songs():
     """"""
     pass
 
 
-def add_songs():
+def add_songs_list():
     """"""
     pass
 
 
+def add_songs_direct(playlist, title, artist):
+    """"""
+    playlist.append({'title': title, 'artist': artist})
+    write_playlist(playlist)
+    print(f"'{title}' by {artist} has been added to your playlist.\n")
+
+
+def add_songs_manually(playlist):
+    """"""
+    title = input("\nEnter song name: ")
+    artist = input("Enter artist's name: ")
+    add_songs_direct(playlist, title, artist)
+
+
+def delete_songs(playlist):
+    pass
+
+
+def about():
+    print("\nThis program was developed as simple way for users to search for")
+    print("artists based on a song title, or look up songs from a certain")
+    print("artist. This app also allows users to keep track of their favorite")
+    print("songs.\n")
+    print("Users can also look forward to future services.\n")
+
+
 def view_playlist(playlist):
     """"""
+    print("==============================================================="
+          "===============================")
+    print("View Playlist")
+    print("\nKeep track of your favorite songs")
+    print("==============================================================="
+          "===============================")
     if not playlist:
         print("\nYour playlist is empty.\n")
     else:
         print("\nYour Playlist:")
-        for idx, song in enumerate(playlist, 1):
-            print(f"{idx}. {song['title']} by {song['artist']}")
-        print("\n")
+        for i, song in enumerate(playlist, 1):
+            print(f"{i}. {song['title']} by {song['artist']}")
+    print("\n\nPlease select an option:")
+    print("1. Go to main menu")
+    print("2. Delete a song in your playlist")
+    selection = input("\nEnter an option: ")
+    if selection == 1:
+        return
+    elif selection == 2:
+        pass
+    else:
+        print("Invalid option. Returning to main menu.\n")
 
 
 def main():
     """"""
-    library = load_music_library()
-    playlist = load_playlist()
+    library = read_music_library()
+    playlist = read_playlist()
     while True:
         print("==============================================================="
               "===============================")
         print("Music Application")
         print("\nYou can search for songs and artists and create playlists to"
-              " keep track of your favorite songs")
+              " keep track of your favorite songs.")
         print("==============================================================="
               "===============================")
         print("\n\nPlease select an option:")
@@ -115,22 +165,25 @@ def main():
         print("2. Find Songs")
         print("3. Add Songs to Playlist")
         print("4. View Playlist")
+        print("5. About")
         print("9. Exit Program")
 
         selection = input("\nEnter an option: ")
         if selection == "1":
-            find_artist(library)
+            find_artist(library, playlist)
         elif selection == "2":
             pass
         elif selection == "3":
-            pass
+            add_songs_manually(playlist)
         elif selection == "4":
             view_playlist(playlist)
+        elif selection == "5":
+            about()
         elif selection == "9":
             print("Goodbye!")
             sys.exit()
         else:
-            print("Invalid option\n")
+            print("Invalid option.\n")
 
 
 if __name__ == "__main__":
