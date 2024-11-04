@@ -31,28 +31,59 @@ def load_playlist():
 
 
 def find_artist(library):
+    """"""
     print("\n==============================================================="
           "===============================")
     print("Find Artist")
     print("\nYou You can enter a song name and it will return the artist")
     print("==============================================================="
           "===============================")
-    title = input("\nEnter the song title: ")
-    found = False
-    for song in library:
-        if song['title'].lower() == title.lower():
-            print(f"Artist: {song['artist']}")
-            found = True
-            break
-    if not found:
-        print("Song not found.\n")
+    while True:
+        title = input("\nEnter the song title: ")
+        found = False
+        for song in library:
+            if song['title'].lower() == title.lower():
+                print(f"Artist: {song['artist']}")
+                found = True
+                break
+        if not found:
+            print("Song not found.\n")
+            print("Please select an option:")
+            print("1. Search again")
+            print("2. Go to Main Menu")
+            selection = input("\nEnter an option: ")
+            if selection == "1":
+                continue
+            elif selection == "2":
+                break
+            else:
+                print("Invalid option. Returning to main menu.")
+                break
+        else:
+            print("\nPlease select an option:")
+            print("1. Search again")
+            print("2. Add song to playlist")
+            print("3. Go to Main Menu")
+            selection = input("\nEnter an option: ")
+            if selection == "1":
+                continue
+            elif selection == "2":
+                break
+            elif selection == "3":
+                break
+            else:
+                print("Invalid option. Returning to main menu.")
+                break
+
 
 
 def find_songs():
+    """"""
     pass
 
 
 def add_songs():
+    """"""
     pass
 
 
@@ -99,7 +130,7 @@ def main():
             print("Goodbye!")
             sys.exit()
         else:
-            print("Invalid option")
+            print("Invalid option\n")
 
 
 if __name__ == "__main__":
