@@ -86,14 +86,54 @@ def find_artist(library, playlist):
                 break
 
 
-def find_songs():
+def find_songs(library, playlist):
     """"""
-    pass
-
-
-def add_songs_list():
-    """"""
-    pass
+    print("\n==============================================================="
+          "===============================")
+    print("Find Songs")
+    print("\nEnter an artist name to populate a list of their popular songs")
+    print("==============================================================="
+          "===============================")
+    while True:
+        artist = input("\nEnter the artist's name: ")
+        artist_songs = [song for song in library if song['artist'].lower() == artist.lower()]
+        if artist_songs:
+            print(f"\nSongs by {artist}:\n")
+            for i, song in enumerate(artist_songs, 1):
+                print(f"{i}. {song['title']}")
+            print("\nPlease select an option:")
+            print("1. Search songs from another artist")
+            print("2. Add song to playlist")
+            print("3. Go back to main menu")
+            choice = input("\nEnter an option: ")
+            if choice == '1':
+                continue
+            elif choice == '2':
+                print(f"\n{song['artist']}'s Songs:\n")
+                for i, song in enumerate(artist_songs, 1):
+                    print(f"{i}. {song['title']}")
+                choice = int(input("\nSelect the number of the song to add to your playlist: "))
+                if 1 <= choice <= len(artist_songs):
+                    add_songs_direct(playlist, artist_songs[choice -1]['title'], artist_songs[choice -1]['artist'])
+                break
+            elif choice == '3':
+                break
+            else:
+                print("Invalid selection. You will return to the main menu\n")
+                break
+        else:
+            print("No songs found for this artist.")
+            print("\nPlease select an option:")
+            print("1. Search songs from another artist")
+            print("2. Go back to main menu")
+            selection = input("\nEnter an option: ")
+            if selection == "1":
+                continue
+            elif selection == "2":
+                break
+            else:
+                print("Invalid option. Returning to main menu.")
+                break
 
 
 def add_songs_direct(playlist, title, artist):
@@ -192,7 +232,7 @@ def main():
         if selection == "1":
             find_artist(library, playlist)
         elif selection == "2":
-            pass
+            find_songs(library, playlist)
         elif selection == "3":
             add_songs_manually(playlist)
         elif selection == "4":
