@@ -111,15 +111,27 @@ def add_songs_manually(playlist):
 
 
 def delete_songs(playlist):
-    pass
-
-
-def about():
-    print("\nThis program was developed as simple way for users to search for")
-    print("artists based on a song title, or look up songs from a certain")
-    print("artist. This app also allows users to keep track of their favorite")
-    print("songs.\n")
-    print("Users can also look forward to future services.\n")
+    """"""
+    if not playlist:
+        print("Your playlist is empty.")
+        return
+    else:
+        print("\nYour Playlist:\n")
+        for i, song in enumerate(playlist, 1):
+            print(f"{i}. {song['title']} by {song['artist']}")
+        choice = int(input("\nSelect the number of the song to delete: "))
+        if 1 <= choice <= len(playlist):
+            confirmation = input(f"Are you sure you want to delete '{playlist[choice -1]['title']}' by '{playlist[choice -1]['artist']}' from your playlist? This action is not recoverable. Enter 'yes' to continue or 'no' to cancel: ").lower()
+            if confirmation == 'yes':
+                removed_song = playlist.pop(choice - 1)
+                write_playlist(playlist)
+                print(f"Removed '{removed_song['title']}' by '{removed_song['artist']}' from the playlist.")
+                return
+            else:
+                print("Deletion canceled. You will return to the main menu.\n")
+                return
+        else:
+            print("Invalid selection. You will return to the main menu\n")
 
 
 def view_playlist(playlist):
@@ -133,19 +145,27 @@ def view_playlist(playlist):
     if not playlist:
         print("\nYour playlist is empty.\n")
     else:
-        print("\nYour Playlist:")
+        print("\nYour Playlist:\n")
         for i, song in enumerate(playlist, 1):
             print(f"{i}. {song['title']} by {song['artist']}")
     print("\n\nPlease select an option:")
     print("1. Go to main menu")
     print("2. Delete a song in your playlist")
     selection = input("\nEnter an option: ")
-    if selection == 1:
+    if selection == "1":
         return
-    elif selection == 2:
-        pass
+    elif selection == "2":
+        delete_songs(playlist)
     else:
         print("Invalid option. Returning to main menu.\n")
+
+
+def about():
+    print("\nThis program was developed as simple way for users to search for")
+    print("artists based on a song title, or look up songs from a certain")
+    print("artist. This app also allows users to keep track of their favorite")
+    print("songs.\n")
+    print("Users can also look forward to future services.\n")
 
 
 def main():
