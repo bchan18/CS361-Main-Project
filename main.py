@@ -1,5 +1,6 @@
 import csv
 import sys
+import requests
 
 
 music_library_file = "library.csv"
@@ -208,6 +209,55 @@ def about():
     print("Users can also look forward to future services.\n")
 
 
+def random_song():
+    """"""
+    print("\n==============================================================="
+          "===============================")
+    print("Generate a Random Song")
+    print("\nFeeling lucky? Generate a random song to listen to.")
+    print("==============================================================="
+          "===============================")
+    print("\nPlease select an option:")
+    print("1. Generate a random song")
+    print("2. See the list of random songs")
+    print("3. Add song to random songs list")
+    print("4. Delete a song from the random song list")
+    print("5. Go to main menu")
+    selection = input("\nEnter an option: ")
+    if selection == "1":
+        response = requests.get("http://localhost:3000/song")
+        song = response.json()
+        print(f"\n{song['title']} by {song['artist']} \n")
+    elif selection == "2":
+        response = requests.get("http://localhost:3000/songs")
+        for song in response.json():
+            print(f"\n{song['id']}. {song['title']} by {song['artist']}")
+        print("\n")
+    elif selection == "3":
+        title = input("Enter title of song: ")
+        artist = input("Enter artist's name: ")
+        song_data = {"title": title, "artist": artist}
+        response = requests.post("http://localhost:3000/songs", json=song_data)
+        print(response.json())
+        print("\n")
+    elif selection == "4":
+        print("Enter the id to delete a song from the random list.")
+        print("To cancel type 'stop'")
+        answer = input("Enter id: ").lower()
+        if answer == "stop":
+            return
+        else:
+            song_data = {"id": int(answer)}
+            response = requests.delete("http://localhost:3000/songs", json=song_data)
+            print(response.json())
+            print("\n")
+    elif selection == "5":
+        return
+    else:
+        print("Invalid option. Returning to main menu.")
+        return
+
+
 def main():
     """"""
     library = read_music_library()
@@ -225,7 +275,8 @@ def main():
         print("2. Find Songs")
         print("3. Add Songs to Playlist")
         print("4. View Playlist")
-        print("5. About")
+        print("5. Generate a Random Song")
+        print("6. About")
         print("9. Exit Program")
 
         selection = input("\nEnter an option: ")
@@ -238,6 +289,8 @@ def main():
         elif selection == "4":
             view_playlist(playlist)
         elif selection == "5":
+            random_song()
+        elif selection == "6":
             about()
         elif selection == "9":
             print("Goodbye!")
