@@ -42,12 +42,10 @@ def write_playlist(playlist):
 
 def find_artist(library, playlist):
     """"""
-    print("\n==============================================================="
-          "===============================")
+    print("=" * 70)
     print("Find Artist")
     print("\nYou You can enter a song name and it will return the artist")
-    print("==============================================================="
-          "===============================")
+    print("=" * 70)
     while True:
         title = input("\nEnter the song title: ")
         found = False
@@ -89,12 +87,10 @@ def find_artist(library, playlist):
 
 def find_songs(library, playlist):
     """"""
-    print("\n==============================================================="
-          "===============================")
+    print("=" * 70)
     print("Find Songs")
     print("\nEnter an artist name to populate a list of their popular songs")
-    print("==============================================================="
-          "===============================")
+    print("=" * 70)
     while True:
         artist = input("\nEnter the artist's name: ")
         artist_songs = [song for song in library if song['artist'].lower() == artist.lower()]
@@ -177,12 +173,10 @@ def delete_songs(playlist):
 
 def view_playlist(playlist):
     """"""
-    print("==============================================================="
-          "===============================")
+    print("=" * 70)
     print("View Playlist")
     print("\nKeep track of your favorite songs")
-    print("==============================================================="
-          "===============================")
+    print("=" * 70)
     if not playlist:
         print("\nYour playlist is empty.\n")
     else:
@@ -211,12 +205,10 @@ def about():
 
 def random_song():
     """"""
-    print("\n==============================================================="
-          "===============================")
+    print("=" * 70)
     print("Generate a Random Song")
     print("\nFeeling lucky? Generate a random song to listen to.")
-    print("==============================================================="
-          "===============================")
+    print("=" * 70)
     print("\nPlease select an option:")
     print("1. Generate a random song")
     print("2. See the list of random songs")
@@ -258,25 +250,36 @@ def random_song():
         return
 
 
+def get_youtube_link():
+    print("=" * 70)
+    print("Generate a YouTube Link")
+    print("\nReturn a YouTube link to a music video")
+    print("=" * 70)
+    artist = input("\nEnter the artist's name: ")
+    song = input("Enter the song title: ")
+    response = requests.get("http://localhost:5000/get_video", params={"artist": artist, "song": song})
+    data = response.json()
+    print(f"\nYouTube Link:\n{data['video_url']}\n")
+
+
 def main():
     """"""
     library = read_music_library()
     playlist = read_playlist()
     while True:
-        print("==============================================================="
-              "===============================")
+        print("=" * 100)
         print("Music Application")
         print("\nYou can search for songs and artists and create playlists to"
               " keep track of your favorite songs.")
-        print("==============================================================="
-              "===============================")
+        print("=" * 100)
         print("\n\nPlease select an option:")
         print("1. Find Artist")
         print("2. Find Songs")
         print("3. Add Songs to Playlist")
         print("4. View Playlist")
         print("5. Generate a Random Song")
-        print("6. About")
+        print("6. Generate YouTube Link")
+        print("8. About")
         print("9. Exit Program")
 
         selection = input("\nEnter an option: ")
@@ -291,6 +294,8 @@ def main():
         elif selection == "5":
             random_song()
         elif selection == "6":
+            get_youtube_link()
+        elif selection == "8":
             about()
         elif selection == "9":
             print("Goodbye!")
